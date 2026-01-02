@@ -3,3 +3,7 @@
 .bg-page-color {
   background-color: #dddddd;
 }
+
+.border-gray-default {
+  border-color: #cccccc;
+}
