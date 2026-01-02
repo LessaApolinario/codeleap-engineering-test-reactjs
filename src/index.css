@@ -1,0 +1,5 @@
+@import "tailwindcss";
+
+.bg-page-color {
+  background-color: #dddddd;
+}
