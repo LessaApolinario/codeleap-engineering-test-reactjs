@@ -18,7 +18,7 @@ export function PostCard({ post, onEditPost, onDeletePost }: PostCardProps) {
     const date = new Date(dateTime)
 
     const minutesAgo = Math.floor((now.getTime() - date.getTime()) / 60000)
-    return `${minutesAgo} minutes ago`
+    return minutesAgo <= 0 ? "Just now" : `${minutesAgo} minute ago`
   }
 
   return (

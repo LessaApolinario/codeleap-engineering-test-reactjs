@@ -19,7 +19,16 @@ export default function PostsProvider({ children }: PropsWithChildren) {
 
   const createPost = useCallback(async (postRequest: CreatePostRequest) => {
     try {
-      const response = await axiosInstance.post<Post>("/careers/", postRequest)
+      const createPostPayload = {
+        ...postRequest,
+        username: sessionStorage.getItem(
+          "@codeleap-engineering-test-reactjs/username"
+        ),
+      }
+      const response = await axiosInstance.post<Post>(
+        "/careers/",
+        createPostPayload
+      )
       setPosts((previousPosts) => [response.data, ...previousPosts])
     } catch (error) {
       console.error(error)

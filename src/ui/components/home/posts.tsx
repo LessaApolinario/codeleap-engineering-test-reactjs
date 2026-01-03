@@ -15,8 +15,8 @@ export function Posts() {
           <PostCard
             key={post.id}
             post={post}
-            onDeletePost={handleOpenDeletePostAlert}
             onEditPost={handleOpenEditPostAlert}
+            onDeletePost={handleOpenDeletePostAlert}
           />
         )
       })}

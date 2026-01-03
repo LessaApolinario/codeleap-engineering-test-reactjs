@@ -11,7 +11,7 @@ export function SignUpForm() {
 
     const isUsernameDefined = username.length > 0
     if (isUsernameDefined) {
-      sessionStorage.setItem(
+      localStorage.setItem(
         "@codeleap-engineering-test-reactjs/username",
         username
       )
