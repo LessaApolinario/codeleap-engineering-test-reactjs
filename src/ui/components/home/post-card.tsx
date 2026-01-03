@@ -4,13 +4,14 @@ import { TbTrashXFilled } from "react-icons/tb"
 import type { Post } from "../../../types/Post"
 import { usePosts } from "../../contexts/hook"
 import { DeletePostAlert } from "./delete-post-alert"
+import { EditPostAlert } from "./edit-post-alert"
 
 interface PostCardProps {
   post: Post
 }
 
 export function PostCard({ post }: PostCardProps) {
-  const { deletePost } = usePosts()
+  const { deletePost, editPost } = usePosts()
   const [isDeletePostAlertOpen, setIsDeletePostAlertOpen] = useState(false)
   const [isEditPostFormOpen, setIsEditPostFormOpen] = useState(false)
 
@@ -45,6 +46,15 @@ export function PostCard({ post }: PostCardProps) {
   function handleDeletePost() {
     deletePost(post.id)
     handleCloseDeletePostAlert()
+  }
+
+  function handleEditPost(title: string, content: string) {
+    editPost({
+      id: post.id,
+      title,
+      content,
+    })
+    handleCloseEditPostAlert()
   }
 
   return (
@@ -83,6 +93,14 @@ export function PostCard({ post }: PostCardProps) {
         <DeletePostAlert
           onCancel={handleCloseDeletePostAlert}
           onClose={handleDeletePost}
+        />
+      )}
+
+      {isEditPostFormOpen && (
+        <EditPostAlert
+          post={post}
+          onCancel={handleCloseEditPostAlert}
+          onConfirm={handleEditPost}
         />
       )}
     </div>

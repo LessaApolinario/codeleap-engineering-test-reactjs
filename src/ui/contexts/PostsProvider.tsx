@@ -37,7 +37,14 @@ export default function PostsProvider({ children }: PropsWithChildren) {
 
   const editPost = useCallback(async (postRequest: EditPostRequest) => {
     try {
-      const response = await axiosInstance.put<Post>("/careers/", postRequest)
+      const editPostPayload = {
+        title: postRequest.title,
+        content: postRequest.content,
+      }
+      const response = await axiosInstance.patch<Post>(
+        `/careers/${postRequest.id}/`,
+        editPostPayload
+      )
 
       setPosts((previousPosts) =>
         previousPosts.map((post) =>

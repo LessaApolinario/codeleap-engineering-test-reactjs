@@ -2,11 +2,11 @@ import { useEffect } from "react"
 import { useNavigate } from "react-router"
 import { CreatePostForm } from "../components/home/create-post-form"
 import { Posts } from "../components/home/posts"
-// import { usePosts } from "../contexts/hook"
+import { usePosts } from "../contexts/hook"
 
 export default function HomePage() {
   const navigate = useNavigate()
-  // const { fetchPosts } = usePosts()
+  const { fetchPosts } = usePosts()
 
   function clearUsernameFromLocalStorage() {
     localStorage.removeItem("@codeleap-engineering-test-reactjs/username")
@@ -20,7 +20,7 @@ export default function HomePage() {
       navigate("/")
     }
 
-    // fetchPosts()
+    fetchPosts()
 
     return () => {
       clearUsernameFromLocalStorage()
