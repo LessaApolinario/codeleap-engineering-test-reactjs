@@ -18,8 +18,8 @@ export function usePosts() {
     await postsContext.editPost(postRequest)
   }
 
-  async function removePost(id: number) {
-    await postsContext.removePost(id)
+  async function deletePost(id: number) {
+    await postsContext.deletePost(id)
   }
 
   return {
@@ -27,6 +27,6 @@ export function usePosts() {
     fetchPosts,
     createPost,
     editPost,
-    removePost,
+    deletePost,
   }
 }

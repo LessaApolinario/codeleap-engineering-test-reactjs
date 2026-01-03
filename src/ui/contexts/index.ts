@@ -8,7 +8,7 @@ interface PostsProps {
   fetchPosts: () => Promise<void>
   createPost: (postRequest: CreatePostRequest) => Promise<void>
   editPost: (postRequest: EditPostRequest) => Promise<void>
-  removePost: (id: number) => Promise<void>
+  deletePost: (id: number) => Promise<void>
 }
 
 export const PostsContext = createContext({} as PostsProps)

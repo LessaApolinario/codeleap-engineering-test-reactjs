@@ -41,7 +41,12 @@ export function SignUpForm() {
       </div>
 
       <div className="flex items-center justify-end">
-        <Button disabled={!username.length} type="submit">
+        <Button
+          disabled={!username.length}
+          color="#7695EC"
+          textColor="#fff"
+          type="submit"
+        >
           ENTER
         </Button>
       </div>

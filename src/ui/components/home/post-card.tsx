@@ -1,14 +1,19 @@
+import { useState } from "react"
 import { FaRegEdit } from "react-icons/fa"
 import { TbTrashXFilled } from "react-icons/tb"
 import type { Post } from "../../../types/Post"
+import { usePosts } from "../../contexts/hook"
+import { DeletePostAlert } from "./delete-post-alert"
 
 interface PostCardProps {
   post: Post
-  onEditPost: () => void
-  onDeletePost: () => void
 }
 
-export function PostCard({ post, onEditPost, onDeletePost }: PostCardProps) {
+export function PostCard({ post }: PostCardProps) {
+  const { deletePost } = usePosts()
+  const [isDeletePostAlertOpen, setIsDeletePostAlertOpen] = useState(false)
+  const [isEditPostFormOpen, setIsEditPostFormOpen] = useState(false)
+
   function formatDateTimeToMinutesAgo(dateTime: string): string {
     if (!dateTime) {
       return ""
@@ -21,6 +26,27 @@ export function PostCard({ post, onEditPost, onDeletePost }: PostCardProps) {
     return minutesAgo <= 0 ? "Just now" : `${minutesAgo} minute ago`
   }
 
+  function handleOpenDeletePostAlert() {
+    setIsDeletePostAlertOpen(true)
+  }
+
+  function handleCloseDeletePostAlert() {
+    setIsDeletePostAlertOpen(false)
+  }
+
+  function handleOpenEditPostAlert() {
+    setIsEditPostFormOpen(true)
+  }
+
+  function handleCloseEditPostAlert() {
+    setIsEditPostFormOpen(false)
+  }
+
+  function handleDeletePost() {
+    deletePost(post.id)
+    handleCloseDeletePostAlert()
+  }
+
   return (
     <div className="rounded-lg border border-gray-default">
       <header className="bg-[#7695EC] p-4 flex items-center justify-between rounded-t-lg">
@@ -31,12 +57,12 @@ export function PostCard({ post, onEditPost, onDeletePost }: PostCardProps) {
         <div className="flex items-center justify-center gap-1.5">
           <TbTrashXFilled
             size={25}
-            onClick={onDeletePost}
+            onClick={handleOpenDeletePostAlert}
             className="cursor-pointer text-white"
           />
           <FaRegEdit
             size={25}
-            onClick={onEditPost}
+            onClick={handleOpenEditPostAlert}
             className="cursor-pointer text-white"
           />
         </div>
@@ -52,6 +78,13 @@ export function PostCard({ post, onEditPost, onDeletePost }: PostCardProps) {
 
         <p>{post.content}</p>
       </div>
+
+      {isDeletePostAlertOpen && (
+        <DeletePostAlert
+          onCancel={handleCloseDeletePostAlert}
+          onClose={handleDeletePost}
+        />
+      )}
     </div>
   )
 }

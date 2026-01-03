@@ -55,7 +55,12 @@ export function CreatePostForm() {
       </div>
 
       <div className="flex items-center justify-end">
-        <Button type="submit" disabled={!title || !content}>
+        <Button
+          type="submit"
+          color="#7695EC"
+          textColor="#fff"
+          disabled={!title || !content}
+        >
           Create
         </Button>
       </div>

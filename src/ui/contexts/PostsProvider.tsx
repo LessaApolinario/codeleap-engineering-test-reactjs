@@ -21,7 +21,7 @@ export default function PostsProvider({ children }: PropsWithChildren) {
     try {
       const createPostPayload = {
         ...postRequest,
-        username: sessionStorage.getItem(
+        username: localStorage.getItem(
           "@codeleap-engineering-test-reactjs/username"
         ),
       }
@@ -49,7 +49,7 @@ export default function PostsProvider({ children }: PropsWithChildren) {
     }
   }, [])
 
-  const removePost = useCallback(async (id: number) => {
+  const deletePost = useCallback(async (id: number) => {
     try {
       await axiosInstance.delete(`/careers/${id}/`)
 
@@ -63,7 +63,13 @@ export default function PostsProvider({ children }: PropsWithChildren) {
 
   return (
     <PostsContext.Provider
-      value={{ posts, fetchPosts, createPost, editPost, removePost }}
+      value={{
+        posts,
+        fetchPosts,
+        createPost,
+        editPost,
+        deletePost,
+      }}
     >
       {children}
     </PostsContext.Provider>
