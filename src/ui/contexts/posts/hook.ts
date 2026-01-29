@@ -1,7 +1,7 @@
 import { useContext } from "react"
 import { PostsContext } from "."
-import type { CreatePostRequest } from "../../types/request/create-post-request"
-import type { EditPostRequest } from "../../types/request/edit-post-request"
+import type { CreatePostRequest } from "../../core/domain/types/request/create-post-request"
+import type { EditPostRequest } from "../../core/domain/types/request/edit-post-request"
 
 export function usePosts() {
   const postsContext = useContext(PostsContext)

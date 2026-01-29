@@ -1,9 +1,9 @@
 import { useCallback, useState, type PropsWithChildren } from "react"
 import { PostsContext } from "."
-import { axiosInstance } from "../../infra/axios"
-import type { Post } from "../../types/Post"
-import type { CreatePostRequest } from "../../types/request/create-post-request"
-import type { EditPostRequest } from "../../types/request/edit-post-request"
+import type { Post } from "../../../core/domain/models/Post"
+import type { CreatePostRequest } from "../../../core/domain/types/request/create-post-request"
+import type { EditPostRequest } from "../../../core/domain/types/request/edit-post-request"
+import { axiosInstance } from "../../../infra/axios"
 
 export default function PostsProvider({ children }: PropsWithChildren) {
   const [posts, setPosts] = useState<Post[]>([])
@@ -22,12 +22,12 @@ export default function PostsProvider({ children }: PropsWithChildren) {
       const createPostPayload = {
         ...postRequest,
         username: localStorage.getItem(
-          "@codeleap-engineering-test-reactjs/username"
+          "@codeleap-engineering-test-reactjs/username",
         ),
       }
       const response = await axiosInstance.post<Post>(
         "/careers/",
-        createPostPayload
+        createPostPayload,
       )
       setPosts((previousPosts) => [response.data, ...previousPosts])
     } catch (error) {
@@ -43,13 +43,13 @@ export default function PostsProvider({ children }: PropsWithChildren) {
       }
       const response = await axiosInstance.patch<Post>(
         `/careers/${postRequest.id}/`,
-        editPostPayload
+        editPostPayload,
       )
 
       setPosts((previousPosts) =>
         previousPosts.map((post) =>
-          post.id === response.data.id ? response.data : post
-        )
+          post.id === response.data.id ? response.data : post,
+        ),
       )
     } catch (error) {
       console.error(error)
@@ -61,7 +61,7 @@ export default function PostsProvider({ children }: PropsWithChildren) {
       await axiosInstance.delete(`/careers/${id}/`)
 
       setPosts((previousPosts) =>
-        previousPosts.filter((post) => post.id !== id)
+        previousPosts.filter((post) => post.id !== id),
       )
     } catch (error) {
       console.error(error)

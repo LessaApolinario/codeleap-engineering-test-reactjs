@@ -1,20 +1,31 @@
 import { useState, type FormEvent } from "react"
+import { FaGoogle } from "react-icons/fa"
 import { useNavigate } from "react-router"
+import constants from "../../../core/utils/constants"
+import { createLocalUserFromUsername } from "../../../core/utils/user"
+import { useAuth } from "../../contexts/auth/hook"
 import { Button } from "../base/button"
 
 export function SignUpForm() {
   const navigate = useNavigate()
   const [username, setUsername] = useState("")
+  const { loginWithGoogle, updateUser } = useAuth()
+
+  async function handleLoginWithGoogle() {
+    const wasLoginSuccessFull = await loginWithGoogle()
+    if (wasLoginSuccessFull) {
+      navigate("/home")
+    }
+  }
 
   function handleSubmit(event: FormEvent) {
     event.preventDefault()
 
     const isUsernameDefined = username.length > 0
     if (isUsernameDefined) {
-      localStorage.setItem(
-        "@codeleap-engineering-test-reactjs/username",
-        username
-      )
+      const newUser = createLocalUserFromUsername(username)
+      updateUser(newUser)
+      localStorage.setItem(constants.USER_CACHE_KEY, JSON.stringify(newUser))
       navigate("/home")
     }
   }
@@ -48,6 +59,19 @@ export function SignUpForm() {
           type="submit"
         >
           ENTER
+        </Button>
+      </div>
+
+      <div className="w-full flex items-center justify-center">
+        <Button
+          type="button"
+          color="#141414"
+          textColor="#fff"
+          onClick={handleLoginWithGoogle}
+          className="flex items-center justify-center gap-2"
+        >
+          Login with Google
+          <FaGoogle className="text-white" />
         </Button>
       </div>
     </form>

@@ -1,5 +1,5 @@
 import { useEffect, useState, type FormEvent } from "react"
-import type { Post } from "../../../types/Post"
+import type { Post } from "../../../core/domain/types/Post"
 import { Button } from "../base/button"
 
 interface EditPostAlertProps {

@@ -1,4 +1,4 @@
-import { usePosts } from "../../contexts/hook"
+import { usePosts } from "../../contexts/posts/hook"
 import { PostCard } from "./post-card"
 
 export function Posts() {

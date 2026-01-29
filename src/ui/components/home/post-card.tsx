@@ -1,8 +1,8 @@
 import { useState } from "react"
 import { FaRegEdit } from "react-icons/fa"
 import { TbTrashXFilled } from "react-icons/tb"
-import type { Post } from "../../../types/Post"
-import { usePosts } from "../../contexts/hook"
+import type { Post } from "../../../core/domain/models/Post"
+import { usePosts } from "../../contexts/posts/hook"
 import { DeletePostAlert } from "./delete-post-alert"
 import { EditPostAlert } from "./edit-post-alert"
 

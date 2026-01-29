@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from "react"
 import { Button } from "../base/button"
-import { usePosts } from "../../contexts/hook"
+import { usePosts } from "../../contexts/posts/hook"
 
 export function CreatePostForm() {
   const { createPost } = usePosts()
