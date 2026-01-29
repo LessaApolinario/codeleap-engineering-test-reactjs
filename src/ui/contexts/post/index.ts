@@ -11,4 +11,4 @@ interface PostsProps {
   deletePost: (id: number) => Promise<void>
 }
 
-export const PostsContext = createContext({} as PostsProps)
+export const PostContext = createContext({} as PostsProps)

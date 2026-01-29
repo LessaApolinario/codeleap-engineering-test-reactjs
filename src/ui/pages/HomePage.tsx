@@ -5,7 +5,7 @@ import { Button } from "../components/base/button"
 import { CreatePostForm } from "../components/home/create-post-form"
 import { Posts } from "../components/home/posts"
 import { useAuth } from "../contexts/auth/hook"
-import { usePosts } from "../contexts/posts/hook"
+import { usePosts } from "../contexts/post/hook"
 
 export default function HomePage() {
   const navigate = useNavigate()
@@ -32,6 +32,7 @@ export default function HomePage() {
     const user = localStorage.getItem(constants.USER_CACHE_KEY)
     if (!user) {
       navigate("/loading/logout")
+      return
     }
 
     fetchPosts()

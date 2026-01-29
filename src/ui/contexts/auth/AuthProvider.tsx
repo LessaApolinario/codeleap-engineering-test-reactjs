@@ -3,6 +3,8 @@ import { AuthContext } from "."
 import type { User } from "../../../core/domain/models/User"
 import type { AuthUseCase } from "../../../core/interfaces/usecases/AuthUseCase"
 import constants from "../../../core/utils/constants"
+import { useNotification } from "../../hooks/useNotification"
+import messages from "../../../core/utils/messages"
 
 interface AuthProviderProps {
   useCase: AuthUseCase
@@ -12,6 +14,7 @@ export default function AuthProvider({
   children,
   useCase,
 }: PropsWithChildren<AuthProviderProps>) {
+  const { showSuccessNotification, showErrorNotification } = useNotification()
   const [user, setUser] = useState<User | undefined>(() => {
     const cachedUser = localStorage.getItem(constants.USER_CACHE_KEY)
     return cachedUser ? JSON.parse(cachedUser) : undefined
@@ -22,9 +25,10 @@ export default function AuthProvider({
       const user = await useCase.loginWithGoogle()
       setUser(user)
       localStorage.setItem(constants.USER_CACHE_KEY, JSON.stringify(user))
+      showSuccessNotification(messages.loginWithSuccessMessage)
       return true
     } catch (error) {
-      // toast aqui
+      showErrorNotification(messages.loginWithFailureMessage)
       return false
     }
   }, [useCase])
@@ -34,9 +38,10 @@ export default function AuthProvider({
       await useCase.logout()
       setUser(undefined)
       localStorage.removeItem(constants.USER_CACHE_KEY)
+      showSuccessNotification(messages.logoutSuccessMessage)
       return true
     } catch (error) {
-      // toast aqui
+      showErrorNotification(messages.logoutFailureMessage)
       return false
     }
   }, [useCase])

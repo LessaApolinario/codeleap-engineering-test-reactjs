@@ -2,7 +2,7 @@ import { useState } from "react"
 import { FaRegEdit } from "react-icons/fa"
 import { TbTrashXFilled } from "react-icons/tb"
 import type { Post } from "../../../core/domain/models/Post"
-import { usePosts } from "../../contexts/posts/hook"
+import { usePosts } from "../../contexts/post/hook"
 import { DeletePostAlert } from "./delete-post-alert"
 import { EditPostAlert } from "./edit-post-alert"
 
