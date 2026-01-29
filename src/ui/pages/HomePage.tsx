@@ -18,20 +18,20 @@ export default function HomePage() {
 
   async function handleLogout() {
     if (user?.isLocal) {
-      navigate("/")
+      navigate("/loading/logout")
       return
     }
 
     const wasLogoutSuccessful = await logout()
     if (wasLogoutSuccessful) {
-      navigate("/")
+      navigate("/loading/logout")
     }
   }
 
   useEffect(() => {
     const user = localStorage.getItem(constants.USER_CACHE_KEY)
     if (!user) {
-      navigate("/")
+      navigate("/loading/logout")
     }
 
     fetchPosts()

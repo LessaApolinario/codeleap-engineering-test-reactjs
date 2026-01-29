@@ -14,7 +14,7 @@ export function SignUpForm() {
   async function handleLoginWithGoogle() {
     const wasLoginSuccessFull = await loginWithGoogle()
     if (wasLoginSuccessFull) {
-      navigate("/home")
+      navigate("/loading/home")
     }
   }
 
@@ -26,7 +26,7 @@ export function SignUpForm() {
       const newUser = createLocalUserFromUsername(username)
       updateUser(newUser)
       localStorage.setItem(constants.USER_CACHE_KEY, JSON.stringify(newUser))
-      navigate("/home")
+      navigate("/loading/home")
     }
   }
 

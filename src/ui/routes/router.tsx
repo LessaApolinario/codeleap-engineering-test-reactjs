@@ -1,7 +1,9 @@
 import { createBrowserRouter } from "react-router"
+import { PageLoading } from "../components/base/page-loading"
+import { Spinner } from "../components/base/spinner"
 import RootLayout from "../layouts/RootLayout"
-import SignUpPage from "../pages/SignUpPage"
 import HomePage from "../pages/HomePage"
+import SignUpPage from "../pages/SignUpPage"
 
 const router = createBrowserRouter([
   {
@@ -15,6 +17,22 @@ const router = createBrowserRouter([
       {
         path: "/home",
         element: <HomePage />,
+      },
+      {
+        path: "/loading/home",
+        element: (
+          <PageLoading to="/home" timeout={1500}>
+            <Spinner color="#7695EC" />
+          </PageLoading>
+        ),
+      },
+      {
+        path: "/loading/logout",
+        element: (
+          <PageLoading to="/" timeout={1500}>
+            <Spinner color="#7695EC" />
+          </PageLoading>
+        ),
       },
     ],
   },
