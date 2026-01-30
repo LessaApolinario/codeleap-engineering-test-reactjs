@@ -1,8 +1,10 @@
 import { useState, type FormEvent } from "react"
 import { Button } from "../base/button"
 import { usePosts } from "../../contexts/post/hook"
+import { useAuth } from "../../contexts/auth/hook"
 
 export function CreatePostForm() {
+  const { user } = useAuth()
   const { createPost } = usePosts()
   const [title, setTitle] = useState("")
   const [content, setContent] = useState("")
@@ -14,7 +16,14 @@ export function CreatePostForm() {
 
   async function handleSubmit(event: FormEvent) {
     event.preventDefault()
-    await createPost({ title, content })
+
+    const payload = {
+      title,
+      content,
+      username: user?.name ?? "",
+    }
+
+    await createPost(payload)
     clearFormFields()
   }
 
