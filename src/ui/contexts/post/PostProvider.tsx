@@ -6,6 +6,7 @@ import type { EditPostRequest } from "../../../core/domain/types/request/edit-po
 import type { PostUseCase } from "../../../core/interfaces/usecases/PostUseCase"
 import messages from "../../../core/utils/messages"
 import { useNotification } from "../../hooks/useNotification"
+import type { PostFilterParameters } from "../../../core/domain/types/filters/post"
 
 interface PostProviderProps {
   useCase: PostUseCase
@@ -17,6 +18,14 @@ export default function PostProvider({
 }: PropsWithChildren<PostProviderProps>) {
   const { showSuccessNotification, showErrorNotification } = useNotification()
   const [posts, setPosts] = useState<Post[]>([])
+  const [filteredPosts, setFilteredPosts] = useState<Post[]>([])
+  const [filters, setFilters] = useState<PostFilterParameters>({
+    username: "",
+    title: "",
+    content: "",
+    startDate: "",
+    endDate: "",
+  })
 
   const fetchPosts = useCallback(async () => {
     try {
@@ -63,14 +72,64 @@ export default function PostProvider({
     }
   }, [])
 
+  const filterPosts = useCallback(() => {
+    const allFiltersEmpty = Object.values(filters).every((value) => !value)
+    if (allFiltersEmpty) {
+      return
+    }
+
+    const newFilteredPosts = posts.filter((post) => {
+      const usernameMatch =
+        !filters.username ||
+        post.username.toLowerCase().includes(filters.username.toLowerCase())
+
+      const titleMatch =
+        !filters.title ||
+        post.title.toLowerCase().includes(filters.title.toLowerCase())
+
+      const contentMatch =
+        !filters.content ||
+        post.content.toLowerCase().includes(filters.content.toLowerCase())
+
+      const dateMatch =
+        (!filters.startDate && !filters.endDate) ||
+        (post.created_datetime >= filters.startDate &&
+          post.created_datetime <= filters.endDate)
+
+      return usernameMatch && titleMatch && contentMatch && dateMatch
+    })
+
+    setFilteredPosts(newFilteredPosts)
+  }, [filters])
+
+  const clearFilters = useCallback(() => {
+    setFilteredPosts([])
+    setFilters({
+      username: "",
+      title: "",
+      content: "",
+      startDate: "",
+      endDate: "",
+    })
+  }, [])
+
+  const updateFilters = useCallback((newFilters: PostFilterParameters) => {
+    setFilters(newFilters)
+  }, [])
+
   return (
     <PostContext.Provider
       value={{
         posts,
+        filters,
         fetchPosts,
         createPost,
         editPost,
         deletePost,
+        filteredPosts,
+        filterPosts,
+        clearFilters,
+        updateFilters,
       }}
     >
       {children}

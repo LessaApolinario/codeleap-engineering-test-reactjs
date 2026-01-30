@@ -1,0 +1,100 @@
+import { type FormEvent } from "react"
+import { usePosts } from "../../contexts/post/hook"
+import { Button } from "../base/button"
+
+export function PostsFilter() {
+  const { filters, updateFilters, filterPosts, clearFilters } = usePosts()
+
+  const areAllFiltersEmpty = Object.values(filters).every((value) => !value)
+
+  function handleFilterPosts(event: FormEvent) {
+    event.preventDefault()
+    filterPosts()
+  }
+
+  function handleClearFilters() {
+    clearFilters()
+  }
+
+  return (
+    <form
+      onSubmit={handleFilterPosts}
+      className="bg-white border border-gray-default rounded-lg p-4"
+    >
+      <h4 className="text-xl font-bold mb-4">Posts Filters</h4>
+
+      <div className="grid grid-cols-2 gap-4 mb-4">
+        <input
+          type="text"
+          placeholder="username"
+          className={`border border-gray-default rounded-lg p-2 ${areAllFiltersEmpty ? "cursor-not-allowed" : ""}`}
+          onChange={(e) =>
+            updateFilters({ ...filters, username: e.target.value })
+          }
+          value={filters.username}
+          disabled={areAllFiltersEmpty}
+        />
+        <input
+          type="text"
+          placeholder="title"
+          className={`border border-gray-default rounded-lg p-2 ${areAllFiltersEmpty ? "cursor-not-allowed" : ""}`}
+          onChange={(e) => updateFilters({ ...filters, title: e.target.value })}
+          value={filters.title}
+          disabled={areAllFiltersEmpty}
+        />
+        <input
+          type="text"
+          placeholder="content"
+          className={`border border-gray-default rounded-lg p-2 ${areAllFiltersEmpty ? "cursor-not-allowed" : ""}`}
+          onChange={(e) =>
+            updateFilters({ ...filters, content: e.target.value })
+          }
+          value={filters.content}
+          disabled={areAllFiltersEmpty}
+        />
+        <input
+          type="text"
+          placeholder="start date"
+          className={`border border-gray-default rounded-lg p-2 ${areAllFiltersEmpty ? "cursor-not-allowed" : ""}`}
+          onChange={(e) =>
+            updateFilters({ ...filters, startDate: e.target.value })
+          }
+          value={filters.startDate}
+          disabled={areAllFiltersEmpty}
+        />
+        <input
+          type="text"
+          placeholder="end date"
+          className={`border border-gray-default rounded-lg p-2 ${areAllFiltersEmpty ? "cursor-not-allowed" : ""}`}
+          onChange={(e) =>
+            updateFilters({ ...filters, endDate: e.target.value })
+          }
+          value={filters.endDate}
+          disabled={areAllFiltersEmpty}
+        />
+      </div>
+
+      <div className="flex items-center justify-end gap-2">
+        <Button
+          color="#FF5151"
+          textColor="#fff"
+          type="button"
+          onClick={handleClearFilters}
+          className={areAllFiltersEmpty ? "cursor-not-allowed" : ""}
+          disabled={areAllFiltersEmpty}
+        >
+          Clear
+        </Button>
+        <Button
+          color="#7695EC"
+          textColor="#fff"
+          type="submit"
+          className={areAllFiltersEmpty ? "cursor-not-allowed" : ""}
+          disabled={areAllFiltersEmpty}
+        >
+          Filter
+        </Button>
+      </div>
+    </form>
+  )
+}

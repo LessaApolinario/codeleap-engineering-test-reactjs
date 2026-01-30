@@ -1,13 +1,13 @@
 import { useEffect } from "react"
+import { FaArrowRightFromBracket } from "react-icons/fa6"
 import { useNavigate } from "react-router"
 import constants from "../../core/utils/constants"
+import { UserAvatar } from "../components/auth/user-avatar"
 import { Button } from "../components/base/button"
 import { CreatePostForm } from "../components/home/create-post-form"
 import { Posts } from "../components/home/posts"
 import { useAuth } from "../contexts/auth/hook"
 import { usePosts } from "../contexts/post/hook"
-import { UserAvatar } from "../components/auth/user-avatar"
-import { FaArrowRightFromBracket } from "react-icons/fa6"
 
 export default function HomePage() {
   const navigate = useNavigate()
