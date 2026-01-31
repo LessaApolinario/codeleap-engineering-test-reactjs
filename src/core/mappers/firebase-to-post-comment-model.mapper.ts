@@ -8,14 +8,14 @@ export class FirebaseToPostCommentModelMapper {
     return {
       id: doc.id,
       author: {
-        id: String(doc.data()["author"]["id"] ?? ""),
-        name: String(doc.data()["author"]["name"] ?? ""),
-        photoURL: String(doc.data()["author"]["photoURL"] ?? ""),
+        id: doc.data()?.author?.id ?? "",
+        name: doc.data()?.author?.name ?? "",
+        photoURL: doc.data()?.author?.photoURL ?? "",
       },
-      post_id: String(doc.data()["post_id"] ?? ""),
-      content: String(doc.data()["content"] ?? ""),
-      created_at: String(doc.data()["created_at"] ?? ""),
-      updated_at: String(doc.data()["updated_at"] ?? ""),
+      post_id: Number(doc.data()?.post_id ?? ""),
+      content: doc.data()?.content ?? "",
+      created_at: doc.data()?.created_at ?? "",
+      updated_at: doc.data()?.updated_at ?? "",
     }
   }
 }

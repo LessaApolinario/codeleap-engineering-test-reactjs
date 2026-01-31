@@ -9,4 +9,14 @@ export class UserToPostCommentAuthorMapper {
       photoURL: user.photoURL ?? "",
     }
   }
+
+  static toUser(postCommentAuthor: PostCommentAuthor): User {
+    return {
+      id: postCommentAuthor.id,
+      name: postCommentAuthor.name,
+      email: "",
+      photoURL: postCommentAuthor.photoURL ?? "",
+      isLocal: false,
+    }
+  }
 }

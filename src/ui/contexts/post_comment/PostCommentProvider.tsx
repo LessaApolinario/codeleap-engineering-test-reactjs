@@ -30,13 +30,16 @@ export default function PostCommentProvider({
           content: postCommentRequest.content,
           post_id: postCommentRequest.post_id,
           created_at: new Date().toString(),
-          updated_at: new Date().toString(),
+          updated_at: "",
         }
 
         setPostCommentsByPostId((previousPostCommentsById) => {
           return {
             ...previousPostCommentsById,
-            [postCommentRequest.post_id]: [newComment],
+            [postCommentRequest.post_id]: [
+              newComment,
+              ...previousPostCommentsById[postCommentRequest.post_id],
+            ],
           }
         })
       } catch (error) {
@@ -63,12 +66,11 @@ export default function PostCommentProvider({
       try {
         await useCase.edit(postCommentRequest)
 
-        const editedPostComment: PostComment = {
+        const editedPostComment = {
           id: postCommentRequest.id,
           author: postCommentRequest.author,
           content: postCommentRequest.content,
           post_id: postCommentRequest.post_id,
-          created_at: "-", // TODO:: set a real created_at
           updated_at: new Date().toString(),
         }
 
@@ -79,7 +81,10 @@ export default function PostCommentProvider({
               editedPostComment.post_id
             ].map((postComment) => {
               if (postComment.id === postCommentRequest.id) {
-                return editedPostComment
+                return {
+                  ...postComment,
+                  ...editedPostComment,
+                }
               }
               return postComment
             }),

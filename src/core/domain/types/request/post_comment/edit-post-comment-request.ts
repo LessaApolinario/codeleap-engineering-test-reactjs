@@ -4,5 +4,5 @@ export interface EditPostCommentRequest {
   id: string
   content: string
   author: PostCommentAuthorRequest
-  post_id: string
+  post_id: number
 }

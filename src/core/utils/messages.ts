@@ -1,4 +1,6 @@
 export default {
+  commentCannotBeEmptyMessage: "Comment cannot be empty",
+
   loginWithSuccessMessage: "Login successful",
   loginWithFailureMessage: "Login failed",
   logoutSuccessMessage: "Logout successful",

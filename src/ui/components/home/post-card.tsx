@@ -10,6 +10,8 @@ import {
 } from "../../contexts/post/hooks"
 import { DeletePostAlert } from "./delete-post-alert"
 import { EditPostAlert } from "./edit-post-alert"
+import { CreatePostCommentForm } from "./post-card/create-post-comment-form"
+import { PostComments } from "./post-card/post-commets"
 
 interface PostCardProps {
   post: Post
@@ -21,6 +23,8 @@ export function PostCard({ post }: PostCardProps) {
   const likeUnlikePost = useLikeUnlikePost()
   const [isDeletePostAlertOpen, setIsDeletePostAlertOpen] = useState(false)
   const [isEditPostFormOpen, setIsEditPostFormOpen] = useState(false)
+  const [isPostCommentsAreaVisible, setIsPostCommentsAreaVisible] =
+    useState(false)
 
   function formatDateTimeToMinutesAgo(dateTime: string): string {
     if (!dateTime) {
@@ -48,6 +52,14 @@ export function PostCard({ post }: PostCardProps) {
 
   function handleCloseEditPostAlert() {
     setIsEditPostFormOpen(false)
+  }
+
+  function handleLikeUnlikePost() {
+    likeUnlikePost(post.id)
+  }
+
+  function handleTogglePostCommentsArea() {
+    setIsPostCommentsAreaVisible(!isPostCommentsAreaVisible)
   }
 
   function handleDeletePost() {
@@ -99,20 +111,28 @@ export function PostCard({ post }: PostCardProps) {
       <div className="flex items-start justify-start gap-2 p-4 border-t border-gray-default">
         {post.is_liked ? (
           <FaHeart
-            onClick={() => likeUnlikePost(post.id)}
+            onClick={handleLikeUnlikePost}
             size={25}
             className="text-red-500 cursor-pointer"
           />
         ) : (
           <FaRegHeart
-            onClick={() => likeUnlikePost(post.id)}
+            onClick={handleLikeUnlikePost}
             size={25}
             className="text-gray-normal cursor-pointer"
           />
         )}
 
-        <FaComment size={25} className="text-gray-normal cursor-pointer" />
+        <FaComment
+          onClick={handleTogglePostCommentsArea}
+          size={25}
+          className="text-gray-normal cursor-pointer"
+        />
       </div>
+
+      {isPostCommentsAreaVisible && <CreatePostCommentForm postId={post.id} />}
+
+      {isPostCommentsAreaVisible && <PostComments postId={post.id} />}
 
       {isDeletePostAlertOpen && (
         <DeletePostAlert

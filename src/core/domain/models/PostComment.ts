@@ -4,7 +4,7 @@ export interface PostComment {
   id: string
   content: string
   author: PostCommentAuthor
-  post_id: string
+  post_id: number
   created_at: string
   updated_at: string
 }

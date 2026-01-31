@@ -4,7 +4,7 @@ import type { CreatePostCommentRequest } from "../../../core/domain/types/reques
 import type { EditPostCommentRequest } from "../../../core/domain/types/request/post_comment/edit-post-comment-request"
 
 interface PostCommentProps {
-  postCommentsByPostId: Record<number, PostComment[]>
+  postCommentsByPostId: Record<string, PostComment[]>
   createPostComment: (
     postCommentRequest: CreatePostCommentRequest,
   ) => Promise<void>

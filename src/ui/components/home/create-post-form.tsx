@@ -45,7 +45,7 @@ export function CreatePostForm() {
           id="title-field"
           className="p-2 rounded-lg border border-gray-default"
           value={title}
-          placeholder="Hello world"
+          placeholder="Title here"
           onChange={(e) => setTitle(e.target.value)}
         />
       </div>
