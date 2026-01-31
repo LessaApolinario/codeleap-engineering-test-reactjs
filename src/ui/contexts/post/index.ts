@@ -15,6 +15,7 @@ interface PostsProps {
   filterPosts: () => void
   clearFilters: () => void
   updateFilters: (newFilters: PostFilterParameters) => void
+  likeUnlikePost: (id: number) => void
 }
 
 export const PostContext = createContext({} as PostsProps)

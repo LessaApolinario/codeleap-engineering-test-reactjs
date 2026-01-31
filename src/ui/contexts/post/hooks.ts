@@ -40,3 +40,7 @@ export function useClearFilters() {
 export function useUpdateFilters() {
   return useContextSelector(PostContext, (ctx) => ctx.updateFilters)
 }
+
+export function useLikeUnlikePost() {
+  return useContextSelector(PostContext, (ctx) => ctx.likeUnlikePost)
+}

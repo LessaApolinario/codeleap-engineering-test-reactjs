@@ -102,6 +102,14 @@ export default function PostProvider({
     setFilteredPosts(newFilteredPosts)
   }, [filters])
 
+  const likeUnlikePost = useCallback((id: number) => {
+    setPosts((previousPosts) =>
+      previousPosts.map((post) =>
+        post.id === id ? { ...post, is_liked: !post.is_liked } : post,
+      ),
+    )
+  }, [])
+
   const clearFilters = useCallback(() => {
     setFilteredPosts([])
     setFilters({
@@ -130,6 +138,7 @@ export default function PostProvider({
         filterPosts,
         clearFilters,
         updateFilters,
+        likeUnlikePost,
       }}
     >
       {children}

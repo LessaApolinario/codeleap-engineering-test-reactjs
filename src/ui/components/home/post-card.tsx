@@ -1,8 +1,13 @@
 import { useState } from "react"
 import { FaRegEdit } from "react-icons/fa"
+import { FaComment, FaHeart, FaRegHeart } from "react-icons/fa6"
 import { TbTrashXFilled } from "react-icons/tb"
 import type { Post } from "../../../core/domain/models/Post"
-import { useDeletePost, useEditPost } from "../../contexts/post/hooks"
+import {
+  useDeletePost,
+  useEditPost,
+  useLikeUnlikePost,
+} from "../../contexts/post/hooks"
 import { DeletePostAlert } from "./delete-post-alert"
 import { EditPostAlert } from "./edit-post-alert"
 
@@ -13,6 +18,7 @@ interface PostCardProps {
 export function PostCard({ post }: PostCardProps) {
   const deletePost = useDeletePost()
   const editPost = useEditPost()
+  const likeUnlikePost = useLikeUnlikePost()
   const [isDeletePostAlertOpen, setIsDeletePostAlertOpen] = useState(false)
   const [isEditPostFormOpen, setIsEditPostFormOpen] = useState(false)
 
@@ -88,6 +94,24 @@ export function PostCard({ post }: PostCardProps) {
         </div>
 
         <p>{post.content}</p>
+      </div>
+
+      <div className="flex items-start justify-start gap-2 p-4 border-t border-gray-default">
+        {post.is_liked ? (
+          <FaHeart
+            onClick={() => likeUnlikePost(post.id)}
+            size={25}
+            className="text-red-500 cursor-pointer"
+          />
+        ) : (
+          <FaRegHeart
+            onClick={() => likeUnlikePost(post.id)}
+            size={25}
+            className="text-gray-normal cursor-pointer"
+          />
+        )}
+
+        <FaComment size={25} className="text-gray-normal cursor-pointer" />
       </div>
 
       {isDeletePostAlertOpen && (
