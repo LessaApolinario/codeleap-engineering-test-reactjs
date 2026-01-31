@@ -97,16 +97,18 @@ export default function PostCommentProvider({
     [],
   )
 
-  const removePostComment = useCallback(async (id: string) => {
+  const removePostComment = useCallback(async (postComment: PostComment) => {
     try {
-      await useCase.remove(id)
+      await useCase.remove(postComment.id)
 
       setPostCommentsByPostId((previousPostCommentsById) => {
         return {
           ...previousPostCommentsById,
-          [id]: previousPostCommentsById[id].filter(
-            (postComment) => postComment.id !== id,
-          ),
+          [postComment.post_id]: previousPostCommentsById[
+            postComment.post_id
+          ].filter((previousPostComment) => {
+            return previousPostComment.id !== postComment.id
+          }),
         }
       })
     } catch (error) {

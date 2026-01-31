@@ -10,7 +10,7 @@ interface PostCommentProps {
   ) => Promise<void>
   fetchPostCommentsByPostId: (postId: number) => Promise<void>
   editPostComment: (postCommentRequest: EditPostCommentRequest) => Promise<void>
-  removePostComment: (id: string) => Promise<void>
+  removePostComment: (postComment: PostComment) => Promise<void>
 }
 
 export const PostCommentContext = createContext({} as PostCommentProps)

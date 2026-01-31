@@ -4,10 +4,14 @@ import { TbTrashXFilled } from "react-icons/tb"
 import type { PostComment } from "../../../../core/domain/models/PostComment"
 import { UserToPostCommentAuthorMapper } from "../../../../core/mappers/user-to-post-comment-author.mapper"
 import { formatDate } from "../../../../core/utils/dates"
-import { useEditPostComment } from "../../../contexts/post_comment/hooks"
-import { UserAvatar } from "../../auth/user-avatar"
-import { EditPostCommentAlert } from "./post-comment-card/edit-post-comment-alert"
 import { useUser } from "../../../contexts/auth/hooks"
+import {
+  useEditPostComment,
+  useRemovePostComment,
+} from "../../../contexts/post_comment/hooks"
+import { UserAvatar } from "../../auth/user-avatar"
+import { DeleteItemAlert } from "../delete-item-alert"
+import { EditPostCommentAlert } from "./post-comment-card/edit-post-comment-alert"
 
 interface PostCommentCardProps {
   postComment: PostComment
@@ -16,11 +20,11 @@ interface PostCommentCardProps {
 export function PostCommentCard({ postComment }: PostCommentCardProps) {
   const user = useUser()
   const editPostComment = useEditPostComment()
-  // const removePostComment = useRemovePostComment()
+  const removePostComment = useRemovePostComment()
   const [isEditPostCommentAlertOpen, setIsEditPostCommentAlertOpen] =
     useState(false)
-  // const [isRemovePostCommentAlertOpen, setIsRemovePostCommentAlertOpen] =
-  //   useState(false)
+  const [isRemovePostCommentAlertOpen, setIsRemovePostCommentAlertOpen] =
+    useState(false)
 
   const wasPostCommentCreatedByCurrentUser = user?.id === postComment.author.id
 
@@ -32,13 +36,18 @@ export function PostCommentCard({ postComment }: PostCommentCardProps) {
     setIsEditPostCommentAlertOpen(false)
   }
 
-  // function handleOpenDeletePostAlert() {
-  //   setIsRemovePostCommentAlertOpen(true)
-  // }
+  function handleOpenDeletePostAlert() {
+    setIsRemovePostCommentAlertOpen(true)
+  }
 
-  // function handleCloseDeletePostAlert() {
-  //   setIsRemovePostCommentAlertOpen(false)
-  // }
+  function handleCloseDeletePostAlert() {
+    setIsRemovePostCommentAlertOpen(false)
+  }
+
+  function handleDeletePostComment() {
+    removePostComment(postComment)
+    handleCloseDeletePostAlert()
+  }
 
   function handleEditPostComment(comment: string) {
     editPostComment({
@@ -64,7 +73,7 @@ export function PostCommentCard({ postComment }: PostCommentCardProps) {
           <div className="self-end flex-auto flex items-center justify-end">
             <TbTrashXFilled
               size={25}
-              // onClick={handleOpenDeletePostAlert}
+              onClick={handleOpenDeletePostAlert}
               className="cursor-pointer text-gray-normal font-bold"
             />
             <FaRegEdit
@@ -85,6 +94,14 @@ export function PostCommentCard({ postComment }: PostCommentCardProps) {
           postComment={postComment}
           onCancel={handleCloseEditPostAlert}
           onConfirm={handleEditPostComment}
+        />
+      )}
+
+      {isRemovePostCommentAlertOpen && (
+        <DeleteItemAlert
+          onCancel={handleCloseDeletePostAlert}
+          onClose={handleDeletePostComment}
+          title="Are you sure you want to delete this comment?"
         />
       )}
     </article>

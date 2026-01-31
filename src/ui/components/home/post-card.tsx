@@ -8,7 +8,7 @@ import {
   useEditPost,
   useLikeUnlikePost,
 } from "../../contexts/post/hooks"
-import { DeletePostAlert } from "./delete-post-alert"
+import { DeleteItemAlert } from "./delete-item-alert"
 import { EditPostAlert } from "./edit-post-alert"
 import { CreatePostCommentForm } from "./post-card/create-post-comment-form"
 import { PostComments } from "./post-card/post-commets"
@@ -135,7 +135,7 @@ export function PostCard({ post }: PostCardProps) {
       {isPostCommentsAreaVisible && <PostComments postId={post.id} />}
 
       {isDeletePostAlertOpen && (
-        <DeletePostAlert
+        <DeleteItemAlert
           onCancel={handleCloseDeletePostAlert}
           onClose={handleDeletePost}
         />
