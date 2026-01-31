@@ -1,9 +1,17 @@
 import { type FormEvent } from "react"
-import { usePosts } from "../../contexts/post/hook"
+import {
+  useClearFilters,
+  useFilterPosts,
+  usePostFilters,
+  useUpdateFilters,
+} from "../../contexts/post/hooks"
 import { Button } from "../base/button"
 
 export function PostsFilter() {
-  const { filters, updateFilters, filterPosts, clearFilters } = usePosts()
+  const filters = usePostFilters()
+  const updateFilters = useUpdateFilters()
+  const filterPosts = useFilterPosts()
+  const clearFilters = useClearFilters()
 
   const areAllFiltersEmpty = Object.values(filters).every((value) => !value)
 

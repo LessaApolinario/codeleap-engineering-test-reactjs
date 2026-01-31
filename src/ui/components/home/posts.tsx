@@ -1,11 +1,12 @@
 import { Activity, useState } from "react"
 import { FaFilter } from "react-icons/fa"
-import { usePosts } from "../../contexts/post/hook"
+import { useFilteredPosts, usePosts } from "../../contexts/post/hooks"
 import { PostCard } from "./post-card"
 import { PostsFilter } from "./posts-filter"
 
 export function Posts() {
-  const { posts, filteredPosts } = usePosts()
+  const posts = usePosts()
+  const filteredPosts = useFilteredPosts()
   const [isPostsFilterVisible, setIsPostsFilterVisible] = useState(false)
 
   function togglePostsFilterVisibility() {

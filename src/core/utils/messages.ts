@@ -11,4 +11,9 @@ export default {
   editPostWithFailureMessage: "Failed to edit post",
   removePostWithSuccessMessage: "Post removed successfully",
   removePostWithFailureMessage: "Failed to remove post",
+
+  createPostCommentWithFailureMessage: "Failed to create post comment",
+  fetchPostCommentsWithFailureMessage: "Failed to fetch post comments",
+  editPostCommentWithFailureMessage: "Failed to edit post comment",
+  removePostCommentWithFailureMessage: "Failed to remove post comment",
 }

@@ -1,4 +1,4 @@
-import { createContext } from "react"
+import { createContext } from "use-context-selector"
 import type { User } from "../../../core/domain/models/User"
 
 interface AuthProps {

@@ -1,11 +1,11 @@
 import { useState, type FormEvent } from "react"
+import { useUser } from "../../contexts/auth/hooks"
+import { useCreatePost } from "../../contexts/post/hooks"
 import { Button } from "../base/button"
-import { usePosts } from "../../contexts/post/hook"
-import { useAuth } from "../../contexts/auth/hook"
 
 export function CreatePostForm() {
-  const { user } = useAuth()
-  const { createPost } = usePosts()
+  const user = useUser()
+  const createPost = useCreatePost()
   const [title, setTitle] = useState("")
   const [content, setContent] = useState("")
 

@@ -6,13 +6,14 @@ import { UserAvatar } from "../components/auth/user-avatar"
 import { Button } from "../components/base/button"
 import { CreatePostForm } from "../components/home/create-post-form"
 import { Posts } from "../components/home/posts"
-import { useAuth } from "../contexts/auth/hook"
-import { usePosts } from "../contexts/post/hook"
+import { useLogout, useUser } from "../contexts/auth/hooks"
+import { useFetchPosts } from "../contexts/post/hooks"
 
 export default function HomePage() {
   const navigate = useNavigate()
-  const { fetchPosts } = usePosts()
-  const { user, logout } = useAuth()
+  const fetchPosts = useFetchPosts()
+  const user = useUser()
+  const logout = useLogout()
 
   function clearUsernameFromLocalStorage() {
     localStorage.removeItem(constants.USER_CACHE_KEY)

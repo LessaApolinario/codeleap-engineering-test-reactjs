@@ -3,13 +3,14 @@ import { FaGoogle } from "react-icons/fa"
 import { useNavigate } from "react-router"
 import constants from "../../../core/utils/constants"
 import { createLocalUserFromUsername } from "../../../core/utils/user"
-import { useAuth } from "../../contexts/auth/hook"
+import { useLoginWithGoogle, useUpdateUser } from "../../contexts/auth/hooks"
 import { Button } from "../base/button"
 
 export function SignUpForm() {
   const navigate = useNavigate()
   const [username, setUsername] = useState("")
-  const { loginWithGoogle, updateUser } = useAuth()
+  const loginWithGoogle = useLoginWithGoogle()
+  const updateUser = useUpdateUser()
 
   async function handleLoginWithGoogle() {
     const wasLoginSuccessFull = await loginWithGoogle()

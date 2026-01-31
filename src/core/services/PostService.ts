@@ -1,6 +1,6 @@
 import type { Post } from "../domain/models/Post"
-import type { CreatePostRequest } from "../domain/types/request/create-post-request"
-import type { EditPostRequest } from "../domain/types/request/edit-post-request"
+import type { CreatePostRequest } from "../domain/types/request/post/create-post-request"
+import type { EditPostRequest } from "../domain/types/request/post/edit-post-request"
 import type { PostRepository } from "../interfaces/repositories/PostRepository"
 import type { PostUseCase } from "../interfaces/usecases/PostUseCase"
 

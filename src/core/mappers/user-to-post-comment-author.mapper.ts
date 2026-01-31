@@ -1,0 +1,12 @@
+import type { PostCommentAuthor } from "../domain/models/PostCommentAuthor"
+import type { User } from "../domain/models/User"
+
+export class UserToPostCommentAuthorMapper {
+  static toPostCommentAuthor(user: User): PostCommentAuthor {
+    return {
+      id: user.id,
+      name: user.name,
+      photoURL: user.photoURL ?? "",
+    }
+  }
+}

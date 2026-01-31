@@ -2,7 +2,7 @@ import { useState } from "react"
 import { FaRegEdit } from "react-icons/fa"
 import { TbTrashXFilled } from "react-icons/tb"
 import type { Post } from "../../../core/domain/models/Post"
-import { usePosts } from "../../contexts/post/hook"
+import { useDeletePost, useEditPost } from "../../contexts/post/hooks"
 import { DeletePostAlert } from "./delete-post-alert"
 import { EditPostAlert } from "./edit-post-alert"
 
@@ -11,7 +11,8 @@ interface PostCardProps {
 }
 
 export function PostCard({ post }: PostCardProps) {
-  const { deletePost, editPost } = usePosts()
+  const deletePost = useDeletePost()
+  const editPost = useEditPost()
   const [isDeletePostAlertOpen, setIsDeletePostAlertOpen] = useState(false)
   const [isEditPostFormOpen, setIsEditPostFormOpen] = useState(false)
 

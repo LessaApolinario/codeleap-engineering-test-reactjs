@@ -1,7 +1,7 @@
-import { createContext } from "react"
+import { createContext } from "use-context-selector"
 import type { Post } from "../../../core/domain/models/Post"
-import type { CreatePostRequest } from "../../../core/domain/types/request/create-post-request"
-import type { EditPostRequest } from "../../../core/domain/types/request/edit-post-request"
+import type { CreatePostRequest } from "../../../core/domain/types/request/post/create-post-request"
+import type { EditPostRequest } from "../../../core/domain/types/request/post/edit-post-request"
 import type { PostFilterParameters } from "../../../core/domain/types/filters/post"
 
 interface PostsProps {
