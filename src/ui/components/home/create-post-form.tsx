@@ -1,9 +1,11 @@
 import { useState, type FormEvent } from "react"
+import { useUser } from "../../contexts/auth/hooks"
+import { useCreatePost } from "../../contexts/post/hooks"
 import { Button } from "../base/button"
-import { usePosts } from "../../contexts/hook"
 
 export function CreatePostForm() {
-  const { createPost } = usePosts()
+  const user = useUser()
+  const createPost = useCreatePost()
   const [title, setTitle] = useState("")
   const [content, setContent] = useState("")
 
@@ -14,7 +16,14 @@ export function CreatePostForm() {
 
   async function handleSubmit(event: FormEvent) {
     event.preventDefault()
-    await createPost({ title, content })
+
+    const payload = {
+      title,
+      content,
+      username: user?.name ?? "",
+    }
+
+    await createPost(payload)
     clearFormFields()
   }
 
@@ -36,7 +45,7 @@ export function CreatePostForm() {
           id="title-field"
           className="p-2 rounded-lg border border-gray-default"
           value={title}
-          placeholder="Hello world"
+          placeholder="Title here"
           onChange={(e) => setTitle(e.target.value)}
         />
       </div>
