@@ -57,6 +57,7 @@ export class PostCommentFirebaseRepository
       author: {
         id: postCommentRequest.author.id,
         name: postCommentRequest.author.name,
+        photoURL: postCommentRequest.author.photoURL,
       },
       post_id: postCommentRequest.post_id,
       updated_at: serverTimestamp(),

@@ -1,6 +1,5 @@
 import { useContextSelector } from "use-context-selector"
 import { AuthContext } from "."
-import type { User } from "../../../core/domain/models/User"
 
 export function useUser() {
   return useContextSelector(AuthContext, (ctx) => ctx.user)
