@@ -1,12 +1,13 @@
 import { useCallback, useState, type PropsWithChildren } from "react"
 import { PostContext } from "."
 import type { Post } from "../../../core/domain/models/Post"
+import type { PostFilterParameters } from "../../../core/domain/types/filters/post"
 import type { CreatePostRequest } from "../../../core/domain/types/request/post/create-post-request"
 import type { EditPostRequest } from "../../../core/domain/types/request/post/edit-post-request"
 import type { PostUseCase } from "../../../core/interfaces/usecases/PostUseCase"
+import { convertToDate } from "../../../core/utils/dates"
 import messages from "../../../core/utils/messages"
 import { useNotification } from "../../hooks/useNotification"
-import type { PostFilterParameters } from "../../../core/domain/types/filters/post"
 
 interface PostProviderProps {
   useCase: PostUseCase
@@ -23,8 +24,8 @@ export default function PostProvider({
     username: "",
     title: "",
     content: "",
-    startDate: "",
-    endDate: "",
+    startDate: null,
+    endDate: null,
   })
 
   const fetchPosts = useCallback(async () => {
@@ -73,12 +74,23 @@ export default function PostProvider({
   }, [])
 
   const filterPosts = useCallback(() => {
-    const allFiltersEmpty = Object.values(filters).every((value) => !value)
-    if (allFiltersEmpty) {
+    const hasAnyFilter = Object.values(filters).some(Boolean)
+
+    if (!hasAnyFilter) {
+      setFilteredPosts([])
       return
     }
 
+    const startDate = filters.startDate ? new Date(filters.startDate) : null
+
+    const endDate = filters.endDate ? new Date(filters.endDate) : null
+
+    if (startDate) startDate.setHours(0, 0, 0, 0)
+    if (endDate) endDate.setHours(23, 59, 59, 999)
+
     const newFilteredPosts = posts.filter((post) => {
+      const postDate = convertToDate(post.created_datetime)
+
       const usernameMatch =
         !filters.username ||
         post.username.toLowerCase().includes(filters.username.toLowerCase())
@@ -92,15 +104,16 @@ export default function PostProvider({
         post.content.toLowerCase().includes(filters.content.toLowerCase())
 
       const dateMatch =
-        (!filters.startDate && !filters.endDate) ||
-        (post.created_datetime >= filters.startDate &&
-          post.created_datetime <= filters.endDate)
+        (!startDate || postDate >= startDate) &&
+        (!endDate || postDate <= endDate)
 
       return usernameMatch && titleMatch && contentMatch && dateMatch
     })
 
-    setFilteredPosts(newFilteredPosts)
-  }, [filters])
+    if (newFilteredPosts.length > 0) {
+      setFilteredPosts(newFilteredPosts)
+    }
+  }, [filters, posts])
 
   const likeUnlikePost = useCallback((id: number) => {
     setPosts((previousPosts) =>
@@ -116,8 +129,8 @@ export default function PostProvider({
       username: "",
       title: "",
       content: "",
-      startDate: "",
-      endDate: "",
+      startDate: null,
+      endDate: null,
     })
   }, [])
 

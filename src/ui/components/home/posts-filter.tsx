@@ -6,6 +6,7 @@ import {
   useUpdateFilters,
 } from "../../contexts/post/hooks"
 import { Button } from "../base/button"
+import { DatePicker } from "../external/date-picker"
 
 export function PostsFilter() {
   const filters = usePostFilters()
@@ -57,23 +58,21 @@ export function PostsFilter() {
           }
           value={filters.content}
         />
-        <input
-          type="text"
+        <DatePicker
+          className="border border-gray-default rounded-lg p-2"
           placeholder="start date"
-          className="border border-gray-default rounded-lg p-2"
-          onChange={(e) =>
-            updateFilters({ ...filters, startDate: e.target.value })
-          }
-          value={filters.startDate}
+          date={filters.startDate}
+          onSelectDate={(newStartDate) => {
+            updateFilters({ ...filters, startDate: newStartDate })
+          }}
         />
-        <input
-          type="text"
-          placeholder="end date"
+        <DatePicker
           className="border border-gray-default rounded-lg p-2"
-          onChange={(e) =>
-            updateFilters({ ...filters, endDate: e.target.value })
-          }
-          value={filters.endDate}
+          placeholder="end date"
+          date={filters.endDate}
+          onSelectDate={(newEndDate) => {
+            updateFilters({ ...filters, endDate: newEndDate })
+          }}
         />
       </div>
 

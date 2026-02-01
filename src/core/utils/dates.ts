@@ -17,3 +17,11 @@ export function formatDate(date: string | Timestamp) {
 
   return `${month}/${day}/${year} at ${hours}:${minutes}`
 }
+
+export function convertToDate(date: string | Timestamp) {
+  if (date instanceof Timestamp) {
+    return date.toDate()
+  }
+
+  return new Date(date)
+}
