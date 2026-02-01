@@ -53,7 +53,7 @@ export default function HomePage() {
             CodeLeap Network
           </h2>
 
-          <div className="w-full flex items-center justify-between gap-2">
+          <div className="w-full flex-col space-y-2 sm:space-y-0 sm:flex sm:flex-row items-center justify-between">
             <UserAvatar user={user} />
 
             <Button
