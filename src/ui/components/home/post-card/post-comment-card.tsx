@@ -67,39 +67,46 @@ export function PostCommentCard({ postComment }: PostCommentCardProps) {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -10, scale: 0.96 }}
       transition={{ duration: 0.25, ease: "easeInOut" }}
-      className="border-t border-gray-default rounded-lg border border-gray-default p-2"
+      className="rounded-lg border border-gray-default p-3 sm:p-4"
     >
-      <header className="flex items-center justify-start gap-2 mb-2">
-        <UserAvatar
-          user={UserToPostCommentAuthorMapper.toUser(postComment.author)}
-        />
+      <header
+        className="
+        flex flex-col gap-2
+        sm:flex-row sm:items-center sm:justify-between
+      "
+      >
+        <div className="flex items-center gap-2 min-w-0">
+          <UserAvatar
+            user={UserToPostCommentAuthorMapper.toUser(postComment.author)}
+          />
 
-        <span className="text-sm text-gray-normal font-semibold">
-          {formatDate(postComment.created_at)}
-        </span>
+          <span className="text-sm text-gray-normal font-semibold truncate">
+            {formatDate(postComment.created_at)}
+          </span>
+        </div>
 
         {wasPostCommentCreatedByCurrentUser && (
-          <div className="self-end flex-auto flex items-center justify-end gap-1">
+          <div className="flex items-center justify-end gap-2">
             <motion.div whileHover={{ scale: 1.15 }} whileTap={{ scale: 0.9 }}>
               <TbTrashXFilled
-                size={25}
+                size={22}
                 onClick={handleOpenDeletePostAlert}
-                className="cursor-pointer text-gray-normal font-bold"
+                className="cursor-pointer text-gray-normal"
               />
             </motion.div>
 
             <motion.div whileHover={{ scale: 1.15 }} whileTap={{ scale: 0.9 }}>
               <FaRegEdit
-                size={25}
+                size={22}
                 onClick={handleOpenEditPostAlert}
-                className="cursor-pointer text-gray-normal font-bold"
+                className="cursor-pointer text-gray-normal"
               />
             </motion.div>
           </div>
         )}
       </header>
 
-      <p className="w-full text-base font-semibold text-gray-normal wrap-break-word break-all overflow-hidden">
+      <p className="mt-2 w-full text-sm sm:text-base font-semibold text-gray-normal wrap-break-word whitespace-pre-wrap">
         {postComment.content}
       </p>
 
