@@ -8,6 +8,10 @@ import {
   useEditPost,
   useLikeUnlikePost,
 } from "../../contexts/post/hooks"
+import {
+  usePostCommentsByPostId,
+  useRemovePostComment,
+} from "../../contexts/post_comment/hooks"
 import { DeleteItemAlert } from "./delete-item-alert"
 import { EditPostAlert } from "./edit-post-alert"
 import { CreatePostCommentForm } from "./post-card/create-post-comment-form"
@@ -18,9 +22,11 @@ interface PostCardProps {
 }
 
 export function PostCard({ post }: PostCardProps) {
-  const deletePost = useDeletePost()
   const editPost = useEditPost()
+  const deletePost = useDeletePost()
   const likeUnlikePost = useLikeUnlikePost()
+  const removePostComment = useRemovePostComment()
+  const postCommentsByPostId = usePostCommentsByPostId()
   const [isDeletePostAlertOpen, setIsDeletePostAlertOpen] = useState(false)
   const [isEditPostFormOpen, setIsEditPostFormOpen] = useState(false)
   const [isPostCommentsAreaVisible, setIsPostCommentsAreaVisible] =
@@ -62,8 +68,24 @@ export function PostCard({ post }: PostCardProps) {
     setIsPostCommentsAreaVisible(!isPostCommentsAreaVisible)
   }
 
-  function handleDeletePost() {
-    deletePost(post.id)
+  async function deleteAllPostComments() {
+    const postComments = postCommentsByPostId[post.id] ?? []
+    const hasPostComments = postComments.length > 0
+
+    if (hasPostComments) {
+      const removePostCommentPromises = postComments.map(
+        async (postComment) => {
+          return await removePostComment(postComment)
+        },
+      )
+
+      await Promise.allSettled(removePostCommentPromises)
+    }
+  }
+
+  async function handleDeletePost() {
+    await deletePost(post.id)
+    await deleteAllPostComments()
     handleCloseDeletePostAlert()
   }
 

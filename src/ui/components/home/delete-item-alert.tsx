@@ -1,6 +1,6 @@
 import { Button } from "../base/button"
 
-interface DeletePostAlertProps {
+interface DeleteItemAlertProps {
   onCancel: () => void
   onClose: () => void
   title?: string
@@ -10,7 +10,7 @@ export function DeleteItemAlert({
   onCancel,
   onClose,
   title,
-}: DeletePostAlertProps) {
+}: DeleteItemAlertProps) {
   return (
     <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center bg-[#777777]/65">
       <div className="rounded-lg bg-white p-4 w-full sm:w-full md:w-125 lg:w-125 xl:w-125 2xl:w-125">
