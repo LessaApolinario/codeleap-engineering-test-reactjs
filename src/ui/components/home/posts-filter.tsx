@@ -31,54 +31,49 @@ export function PostsFilter() {
     >
       <h4 className="text-xl font-bold mb-4">Posts Filters</h4>
 
-      <div className="grid grid-cols-2 gap-4 mb-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3 gap-4 mb-4">
         <input
           type="text"
           placeholder="username"
-          className={`border border-gray-default rounded-lg p-2 ${areAllFiltersEmpty ? "cursor-not-allowed" : ""}`}
+          className="border border-gray-default rounded-lg p-2"
           onChange={(e) =>
             updateFilters({ ...filters, username: e.target.value })
           }
           value={filters.username}
-          disabled={areAllFiltersEmpty}
         />
         <input
           type="text"
           placeholder="title"
-          className={`border border-gray-default rounded-lg p-2 ${areAllFiltersEmpty ? "cursor-not-allowed" : ""}`}
+          className="border border-gray-default rounded-lg p-2"
           onChange={(e) => updateFilters({ ...filters, title: e.target.value })}
           value={filters.title}
-          disabled={areAllFiltersEmpty}
         />
         <input
           type="text"
           placeholder="content"
-          className={`border border-gray-default rounded-lg p-2 ${areAllFiltersEmpty ? "cursor-not-allowed" : ""}`}
+          className="border border-gray-default rounded-lg p-2"
           onChange={(e) =>
             updateFilters({ ...filters, content: e.target.value })
           }
           value={filters.content}
-          disabled={areAllFiltersEmpty}
         />
         <input
           type="text"
           placeholder="start date"
-          className={`border border-gray-default rounded-lg p-2 ${areAllFiltersEmpty ? "cursor-not-allowed" : ""}`}
+          className="border border-gray-default rounded-lg p-2"
           onChange={(e) =>
             updateFilters({ ...filters, startDate: e.target.value })
           }
           value={filters.startDate}
-          disabled={areAllFiltersEmpty}
         />
         <input
           type="text"
           placeholder="end date"
-          className={`border border-gray-default rounded-lg p-2 ${areAllFiltersEmpty ? "cursor-not-allowed" : ""}`}
+          className="border border-gray-default rounded-lg p-2"
           onChange={(e) =>
             updateFilters({ ...filters, endDate: e.target.value })
           }
           value={filters.endDate}
-          disabled={areAllFiltersEmpty}
         />
       </div>
 
