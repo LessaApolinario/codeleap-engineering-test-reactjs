@@ -1,8 +1,10 @@
-import { useState } from "react"
+import { AnimatePresence, motion } from "motion/react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import { FaRegEdit } from "react-icons/fa"
 import { FaComment, FaHeart, FaRegHeart } from "react-icons/fa6"
 import { TbTrashXFilled } from "react-icons/tb"
 import type { Post } from "../../../core/domain/models/Post"
+import type { PostComment } from "../../../core/domain/models/PostComment"
 import {
   useDeletePost,
   useEditPost,
@@ -27,10 +29,33 @@ export function PostCard({ post }: PostCardProps) {
   const likeUnlikePost = useLikeUnlikePost()
   const removePostComment = useRemovePostComment()
   const postCommentsByPostId = usePostCommentsByPostId()
+  const commentsEndRef = useRef<HTMLDivElement>(null)
   const [isDeletePostAlertOpen, setIsDeletePostAlertOpen] = useState(false)
   const [isEditPostFormOpen, setIsEditPostFormOpen] = useState(false)
   const [isPostCommentsAreaVisible, setIsPostCommentsAreaVisible] =
     useState(false)
+
+  const postComments = useMemo<PostComment[]>(() => {
+    return postCommentsByPostId[post.id] ?? []
+  }, [postCommentsByPostId, post.id])
+
+  useEffect(() => {
+    if (isPostCommentsAreaVisible) {
+      setTimeout(() => {
+        commentsEndRef.current?.scrollIntoView({
+          behavior: "smooth",
+        })
+      }, 100)
+    }
+  }, [isPostCommentsAreaVisible])
+
+  useEffect(() => {
+    if (isPostCommentsAreaVisible && postComments.length > 0) {
+      commentsEndRef.current?.scrollIntoView({
+        behavior: "smooth",
+      })
+    }
+  }, [postComments.length])
 
   function formatDateTimeToMinutesAgo(dateTime: string): string {
     if (!dateTime) {
@@ -69,7 +94,6 @@ export function PostCard({ post }: PostCardProps) {
   }
 
   async function deleteAllPostComments() {
-    const postComments = postCommentsByPostId[post.id] ?? []
     const hasPostComments = postComments.length > 0
 
     if (hasPostComments) {
@@ -99,28 +123,38 @@ export function PostCard({ post }: PostCardProps) {
   }
 
   return (
-    <div className="rounded-lg border border-gray-default">
-      <header className="bg-[#7695EC] p-4 flex items-center justify-between rounded-t-lg">
-        <h2 className="font-bold text-white text-lg sm:text-[22px] md:text-[22px] lg:text-[22px] xl:text-[22px] 2xl:text-[22px]">
+    <motion.div className="rounded-lg border border-gray-default bg-white">
+      <motion.header
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.1 }}
+        className="bg-[#7695EC] p-4 flex items-center justify-between rounded-t-lg"
+      >
+        <h2 className="font-bold text-white text-lg sm:text-[22px]">
           {post.title}
         </h2>
 
-        <div className="flex items-center justify-center gap-1.5">
-          <TbTrashXFilled
-            size={25}
-            onClick={handleOpenDeletePostAlert}
-            className="cursor-pointer text-white"
-          />
-          <FaRegEdit
-            size={25}
-            onClick={handleOpenEditPostAlert}
-            className="cursor-pointer text-white"
-          />
+        <div className="flex items-center gap-1.5">
+          <motion.div whileHover={{ scale: 1.15 }} whileTap={{ scale: 0.9 }}>
+            <TbTrashXFilled
+              size={25}
+              onClick={handleOpenDeletePostAlert}
+              className="cursor-pointer text-white"
+            />
+          </motion.div>
+
+          <motion.div whileHover={{ scale: 1.15 }} whileTap={{ scale: 0.9 }}>
+            <FaRegEdit
+              size={25}
+              onClick={handleOpenEditPostAlert}
+              className="cursor-pointer text-white"
+            />
+          </motion.div>
         </div>
-      </header>
+      </motion.header>
 
       <div className="p-4">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between mb-2">
           <p className="text-gray-normal">@{post.username}</p>
           <p className="text-gray-normal">
             {formatDateTimeToMinutesAgo(post.created_datetime)}
@@ -130,46 +164,70 @@ export function PostCard({ post }: PostCardProps) {
         <p>{post.content}</p>
       </div>
 
-      <div className="flex items-start justify-start gap-2 p-4 border-t border-gray-default">
-        {post.is_liked ? (
-          <FaHeart
-            onClick={handleLikeUnlikePost}
-            size={25}
-            className="text-red-500 cursor-pointer"
-          />
-        ) : (
-          <FaRegHeart
-            onClick={handleLikeUnlikePost}
+      <div className="flex items-start gap-3 p-4 border-t border-gray-default">
+        <motion.div
+          whileTap={{ scale: 0.8 }}
+          animate={post.is_liked ? { scale: [1, 1.4, 1] } : { scale: 1 }}
+          transition={{ duration: 0.3 }}
+        >
+          {post.is_liked ? (
+            <FaHeart
+              onClick={handleLikeUnlikePost}
+              size={25}
+              className="text-red-500 cursor-pointer"
+            />
+          ) : (
+            <FaRegHeart
+              onClick={handleLikeUnlikePost}
+              size={25}
+              className="text-gray-normal cursor-pointer"
+            />
+          )}
+        </motion.div>
+
+        <motion.div whileHover={{ scale: 1.15 }} whileTap={{ scale: 0.9 }}>
+          <FaComment
+            onClick={handleTogglePostCommentsArea}
             size={25}
             className="text-gray-normal cursor-pointer"
           />
-        )}
-
-        <FaComment
-          onClick={handleTogglePostCommentsArea}
-          size={25}
-          className="text-gray-normal cursor-pointer"
-        />
+        </motion.div>
       </div>
 
-      {isPostCommentsAreaVisible && <CreatePostCommentForm postId={post.id} />}
+      <AnimatePresence>
+        {isPostCommentsAreaVisible && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="overflow-hidden"
+          >
+            <CreatePostCommentForm postId={post.id} />
+            <div ref={commentsEndRef} />
+            <PostComments postId={post.id} />
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-      {isPostCommentsAreaVisible && <PostComments postId={post.id} />}
+      <AnimatePresence>
+        {isDeletePostAlertOpen && (
+          <DeleteItemAlert
+            onCancel={handleCloseDeletePostAlert}
+            onClose={handleDeletePost}
+          />
+        )}
+      </AnimatePresence>
 
-      {isDeletePostAlertOpen && (
-        <DeleteItemAlert
-          onCancel={handleCloseDeletePostAlert}
-          onClose={handleDeletePost}
-        />
-      )}
-
-      {isEditPostFormOpen && (
-        <EditPostAlert
-          post={post}
-          onCancel={handleCloseEditPostAlert}
-          onConfirm={handleEditPost}
-        />
-      )}
-    </div>
+      <AnimatePresence>
+        {isEditPostFormOpen && (
+          <EditPostAlert
+            post={post}
+            onCancel={handleCloseEditPostAlert}
+            onConfirm={handleEditPost}
+          />
+        )}
+      </AnimatePresence>
+    </motion.div>
   )
 }

@@ -1,4 +1,5 @@
-import { Activity, useState } from "react"
+import { AnimatePresence, motion } from "motion/react"
+import { useState } from "react"
 import { FaFilter } from "react-icons/fa"
 import { useFilteredPosts, usePosts } from "../../contexts/post/hooks"
 import { PostCard } from "./post-card"
@@ -19,25 +20,34 @@ export function Posts() {
 
     if (!hasPosts && !hasFilteredPosts) {
       return <div className="text-center font-bold text-xl">No posts found</div>
-    } else if (hasPosts && !hasFilteredPosts) {
-      return (
-        <div className="flex flex-col gap-3.5">
-          {posts.map((post) => {
-            return <PostCard key={post.id} post={post} />
-          })}
-        </div>
-      )
-    } else if (hasPosts && hasFilteredPosts) {
-      return (
-        <div className="flex flex-col gap-3.5">
-          {filteredPosts.map((post) => {
-            return <PostCard key={post.id} post={post} />
-          })}
-        </div>
-      )
     }
 
-    return <></>
+    const currentComments = hasFilteredPosts ? filteredPosts : posts
+
+    return (
+      <AnimatePresence mode="popLayout">
+        <motion.div layout className="flex flex-col gap-3.5">
+          {currentComments.map((post) => {
+            return (
+              <motion.div
+                key={post.id}
+                layout
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{
+                  opacity: 0,
+                  scale: 0.95,
+                  y: -20,
+                }}
+                transition={{ duration: 0.3, ease: "easeInOut" }}
+              >
+                <PostCard post={post} />
+              </motion.div>
+            )
+          })}
+        </motion.div>
+      </AnimatePresence>
+    )
   }
 
   return (
@@ -50,9 +60,19 @@ export function Posts() {
         />
       </div>
 
-      <Activity mode={isPostsFilterVisible ? "visible" : "hidden"}>
-        <PostsFilter />
-      </Activity>
+      <AnimatePresence>
+        {isPostsFilterVisible && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="overflow-hidden"
+          >
+            <PostsFilter />
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {renderPosts()}
     </>

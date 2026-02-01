@@ -1,3 +1,4 @@
+import { AnimatePresence, motion } from "motion/react"
 import { useState } from "react"
 import { FaRegEdit } from "react-icons/fa"
 import { TbTrashXFilled } from "react-icons/tb"
@@ -60,27 +61,40 @@ export function PostCommentCard({ postComment }: PostCommentCardProps) {
   }
 
   return (
-    <article className="border-t border-gray-default rounded-lg border border-gray-default p-2">
+    <motion.article
+      layout
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -10, scale: 0.96 }}
+      transition={{ duration: 0.25, ease: "easeInOut" }}
+      className="border-t border-gray-default rounded-lg border border-gray-default p-2"
+    >
       <header className="flex items-center justify-start gap-2 mb-2">
         <UserAvatar
           user={UserToPostCommentAuthorMapper.toUser(postComment.author)}
         />
+
         <span className="text-sm text-gray-normal font-semibold">
           {formatDate(postComment.created_at)}
         </span>
 
         {wasPostCommentCreatedByCurrentUser && (
-          <div className="self-end flex-auto flex items-center justify-end">
-            <TbTrashXFilled
-              size={25}
-              onClick={handleOpenDeletePostAlert}
-              className="cursor-pointer text-gray-normal font-bold"
-            />
-            <FaRegEdit
-              size={25}
-              onClick={handleOpenEditPostAlert}
-              className="cursor-pointer text-gray-normal font-bold"
-            />
+          <div className="self-end flex-auto flex items-center justify-end gap-1">
+            <motion.div whileHover={{ scale: 1.15 }} whileTap={{ scale: 0.9 }}>
+              <TbTrashXFilled
+                size={25}
+                onClick={handleOpenDeletePostAlert}
+                className="cursor-pointer text-gray-normal font-bold"
+              />
+            </motion.div>
+
+            <motion.div whileHover={{ scale: 1.15 }} whileTap={{ scale: 0.9 }}>
+              <FaRegEdit
+                size={25}
+                onClick={handleOpenEditPostAlert}
+                className="cursor-pointer text-gray-normal font-bold"
+              />
+            </motion.div>
           </div>
         )}
       </header>
@@ -89,21 +103,25 @@ export function PostCommentCard({ postComment }: PostCommentCardProps) {
         {postComment.content}
       </p>
 
-      {isEditPostCommentAlertOpen && (
-        <EditPostCommentAlert
-          postComment={postComment}
-          onCancel={handleCloseEditPostAlert}
-          onConfirm={handleEditPostComment}
-        />
-      )}
+      <AnimatePresence>
+        {isEditPostCommentAlertOpen && (
+          <EditPostCommentAlert
+            postComment={postComment}
+            onCancel={handleCloseEditPostAlert}
+            onConfirm={handleEditPostComment}
+          />
+        )}
+      </AnimatePresence>
 
-      {isRemovePostCommentAlertOpen && (
-        <DeleteItemAlert
-          onCancel={handleCloseDeletePostAlert}
-          onClose={handleDeletePostComment}
-          title="Are you sure you want to delete this comment?"
-        />
-      )}
-    </article>
+      <AnimatePresence>
+        {isRemovePostCommentAlertOpen && (
+          <DeleteItemAlert
+            onCancel={handleCloseDeletePostAlert}
+            onClose={handleDeletePostComment}
+            title="Are you sure you want to delete this comment?"
+          />
+        )}
+      </AnimatePresence>
+    </motion.article>
   )
 }
